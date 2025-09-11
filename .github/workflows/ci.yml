@@ -28,7 +28,7 @@ jobs:
         run: npm run build
 
   deploy:
-    runs-on: ubuntu-test
+    runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/master'
 
