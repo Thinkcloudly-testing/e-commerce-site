@@ -28,4 +28,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 npm run build
 ```
 
-Builds the apps for production to the `build` folder.<br>
+Builds the application for production to the `build` folder.<br>
