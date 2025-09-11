@@ -30,7 +30,7 @@ jobs:
   deploy:
     runs-on: ubuntu-test
     needs: build
-    if: github.ref == 'ref/heads/master'
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: checkout code
