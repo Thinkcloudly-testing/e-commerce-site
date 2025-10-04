@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: checkout code
-        uses: action/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Deploy the placeholder
         run: echo "You workflow has been deploy successfully."
