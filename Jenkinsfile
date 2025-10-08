@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    tools { nodejs "node16" }   // <-- this tells Jenkins to use NodeJS tool you configured in Global Tools
 
     stages {
         stage('Checkout') {
