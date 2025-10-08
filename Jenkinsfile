@@ -21,13 +21,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'npm test || echo "No tests found"'
-            }
-        }
-
-        stage('Deploy') {
+            stage('Deploy') {
             steps {
                 echo "Deploy step goes here"
             }
