@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    tools { nodejs "node16" }   // <-- this tells Jenkins to use NodeJS tool you configured in Global Tools
+    tools { nodejs "node16" }
 
     stages {
         stage('Checkout') {
@@ -21,16 +21,15 @@ pipeline {
             }
         }
 
-            stage('Deploy') {
+        stage('Deploy to EC2') {
             steps {
-                echo "Deploy step goes here"
+                sshagent (credentials: ['ec2-key']) {  // <- your Jenkins credentials ID for the PEM key
+                    sh '''
+                    scp -o StrictHostKeyChecking=no -r ./build ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com:/home/ubuntu/app
+                    ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com "cd /home/ubuntu/app && pm2 delete ecommerce || true && pm2 serve ./ 3000 --name ecommerce"
+                    '''
+                }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished!'
         }
     }
 }
