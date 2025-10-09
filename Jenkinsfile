@@ -21,13 +21,20 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-            steps {
-                sshagent (credentials: ['ec2-key']) {  // <- your Jenkins credentials ID for the PEM key
-                    sh '''
-                    scp -o StrictHostKeyChecking=no -r ./build ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com:/home/ubuntu/app
-                    ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com "cd /home/ubuntu/app && pm2 delete ecommerce || true && pm2 serve ./ 3000 --name ecommerce"
-                    '''
+       stage('Deploy to EC2') {
+    steps {
+        sshagent (credentials: ['ec2-key']) {
+            sh '''
+            # Copy only the build folder to EC2
+            scp -o StrictHostKeyChecking=no -r build ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com:/home/ubuntu/app
+
+            # SSH into EC2 and serve with PM2
+            ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com "
+                npm install -g serve pm2 &&
+                pm2 delete ecommerce || true &&
+                pm2 serve /home/ubuntu/app 3000 --name ecommerce
+            "
+            '''
                 }
             }
         }
