@@ -21,18 +21,18 @@ pipeline {
             }
         }
 
-       stage('Deploy to EC2') {
+   stage('Deploy to EC2') {
     steps {
         sshagent (credentials: ['ec2-key']) {
             sh '''
-            # Copy only the build folder to EC2
+            # Copy build folder to EC2
             scp -o StrictHostKeyChecking=no -r build ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com:/home/ubuntu/app
 
-            # SSH into EC2 and serve with PM2
+            # SSH into EC2 and run with sudo + pm2 force restart
             ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-140-192-13.us-east-2.compute.amazonaws.com "
-                npm install -g serve pm2 &&
+                sudo npm install -g serve pm2 &&
                 pm2 delete ecommerce || true &&
-                pm2 serve /home/ubuntu/app 3000 --name ecommerce
+                pm2 serve /home/ubuntu/app 3000 --name ecommerce -f
             "
             '''
                 }
