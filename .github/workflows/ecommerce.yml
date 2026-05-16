@@ -18,3 +18,14 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    #if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy the placeholder
+        run: echo "working successfully"
