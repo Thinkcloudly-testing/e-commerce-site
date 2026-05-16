@@ -2,19 +2,19 @@ name: ecommerce workflow
 on:
  push:
    branches: master
- jobs:
+jobs:
 
-   build:
-     runs-on: ubuntu-latest
-     steps:
-       - name: Checkout code
-         uses: action/checkout@v4
-       - name: setup node.js
-         uses: action/setup-nodev4
-         with:
-           node-version: '16'
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: action/checkout@v4
+      - name: setup node.js
+        uses: action/setup-nodev4
+        with:
+          node-version: '16'
 
-       - name: install dependencies
-         run: npm install
-       - name: Run tests
-         run: npm run build
+      - name: install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run build
