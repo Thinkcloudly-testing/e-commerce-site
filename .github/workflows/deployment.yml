@@ -47,6 +47,6 @@ jobs:
 
       - name: Show deployment message
         run:
-          echo "Deploying website............."
+          echo "Deploying website..."
           echo "Build files ready"
 
