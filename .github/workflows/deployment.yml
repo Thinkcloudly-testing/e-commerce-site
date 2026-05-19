@@ -1,0 +1,52 @@
+name: Intermediate React CI Pipeline
+
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+
+      - name: Upload build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: build
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build files
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: build
+
+      - name: Show deployment message
+        run:
+          echo "Deploying website..."
+          echo "Build files ready!"
+
